@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function meteor_signup_menu() {
+  $items['home'] = array(
+    'title' => 'Meteor Signup',
+    'description' => 'Signup for Meteor app',
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('meteor_signup_form'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function meteor_signup_form($form, &$form_state) {
+  // TODO: Port
+//  if (isset($_COOKIE['meteorLoggedIn']) &&  $_COOKIE['meteorLoggedIn']== 1) {
+//    //redirect to app
+//    global $base_root;
+//    $redirect = "https://app." . preg_replace('#^https?://#', '', $base_root);
+//    //drupal_set_message($redirect);
+//    drupal_goto($redirect);
+//  }
+
+  $settings = array('meteor_signup' => array());
+
+  // Has to be manually set.
+  if (!variable_get("meteor_signup_meteor_socket", false)) {
+    drupal_set_message("meteor_signup_meteor_socket variable is unset!", "error");
+  } else {
+    $settings['meteor_signup'] = array('socket' => variable_get("meteor_signup_meteor_socket", false));
+  }
+
+  drupal_add_js($settings, 'setting');
+  drupal_add_js(drupal_get_path("module", "meteor_signup") . "/sockjs-0.3.min.js");
+  drupal_add_js(drupal_get_path("module", "meteor_signup") . "/meteor-ddp.js");
+  drupal_add_js(drupal_get_path("module", "meteor_signup") . "/meteor_signup.js");
+  drupal_add_js(drupal_get_path("module", "meteor_signup") . "/alertify/lib/alertify.min.js");
+  drupal_add_css(drupal_get_path("module", "meteor_signup") . "/alertify/themes/alertify.core.css");
+  drupal_add_css(drupal_get_path("module", "meteor_signup") . "/alertify/themes/alertify.default.css");
+
+  $form['signup_fields'] = array(
+    '#type' => 'fieldset',
+    '#attributes' => array('class' => array('meteor_signup_wrap'))
+  );
+  
+  $form['signup_fields']['email'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('E-mail'),  
+    '#size' => 60,  
+    '#required' => TRUE,
+  );    
+  
+  $form['signup_fields']['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => 'Sign Up',
+  );
+
+  return $form;
+}

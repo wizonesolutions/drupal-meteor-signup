@@ -1,0 +1,5 @@
+name = Meteor Signup
+description = Create new users in Meteor apps via a Drupal page
+core = 7.x
+
+dependencies[] = jquery_update
