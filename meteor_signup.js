@@ -43,11 +43,7 @@
 
     var ddp = new MeteorDdp(websocket);
     ddp.connect().done(function() {
-
-
-
-      //console.log('Connected!');
-      var createUser = ddp.call('createNewUserByEmail', [email, updates]);
+      var createUser = ddp.call('drupalCreateNewUserByEmail', [email, updates]);
 
       createUser.fail(function(ret) {
         alertify.error(ret);
