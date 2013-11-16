@@ -5,12 +5,21 @@
  */
 function meteor_signup_menu() {
   $items['home'] = array(
-    'title' => 'Meteor Signup',
-    'description' => 'Signup for Meteor app',
+    'title' => t('Meteor Signup'),
+    'description' => t('Signup for Meteor app'),
     'access arguments' => array('access content'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('meteor_signup_form'),
     'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/development/meteor-signup'] = array(
+    'title' => t('Meteor Signup'),
+    'description' => t('Configure Meteor Signup so it will work.'),
+    'access arguments' => array('administer meteor signup'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('meteor_signup_admin_form'),
+    'file' => 'meteor_signup.admin.inc',
   );
 
   return $items;
